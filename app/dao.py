@@ -8,6 +8,7 @@ def get_categories():
     }
     ]
 
+
 def get_products(key):
     products = [
         {

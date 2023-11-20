@@ -1,7 +1,13 @@
 from app import db, app
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, Boolean
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, Boolean, Enum
 from sqlalchemy.orm import Relationship
 from flask_login import UserMixin
+import enum
+
+
+class UserRoleEnum(enum.Enum):
+    ADMIN = 1
+    USER = 2
 
 
 class User(db.Model, UserMixin):
@@ -9,8 +15,9 @@ class User(db.Model, UserMixin):
     id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
     name = Column(String(50), nullable=False)
     username = Column(String(50), nullable=False, unique=True)
-    password = Column(String(50), nullable=False)
+    password = Column(String(100), nullable=False)
     avatar = Column(String(100), default='https://cdn1.viettelstore.vn/Images/Product/ProductImage/213191152.jpeg')
+    user_role = Column(Enum(UserRoleEnum), default=UserRoleEnum.USER)
 
     def __str__(self):
         return self.name
@@ -43,7 +50,8 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
         import hashlib
-        u1 = User(name='Admin', username='Admin', password=hashlib.md5('12345'.encode('utf-8')).hexdigest())
+        u1 = User(name='Admin', username='Admin',
+                  password=str(hashlib.md5('12345'.encode('utf-8')).hexdigest()), user_role=UserRoleEnum.ADMIN)
         db.session.add(u1)
         db.session.commit()
 
@@ -63,7 +71,7 @@ if __name__ == '__main__':
         p4 = Product(name='Galaxy S23', price=18000000, category_id=1)
         p5 = Product(name='iPad Pro 2023', price=21000000, category_id=2)
 
-        db.session.add([p1, p2, p3, p4, p5])
+        db.session.add_all([p1, p2, p3, p4, p5])
         db.session.commit()
 
 

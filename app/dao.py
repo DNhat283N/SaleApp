@@ -22,6 +22,9 @@ def get_products(key, cat, page = None):
     return products.all()
 
 
+def count_product():
+    return Product.query.count()
+
 def get_user_by_id(user_id):
     return User.query.get(user_id)
 

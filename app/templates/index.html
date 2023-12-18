@@ -1,13 +1,12 @@
-{{% extends 'layout/base.html' %}}
+{% extends 'layout/base.html' %}
 
-{% title block %}Trang chủ{% endblock %}
 
-{{% block content %}}
+{% block content %}
 <section class="container">
     <ul class="pagination mt-1">
-        {{% for p in pages %}}
+        {% for p in range(pages) %}
         <li class="page-item"><a class="page-link" href="/?page={{ p + 1 }}">{{ p + 1 }}</a></li>
-        {{% endfor %}}
+        {% endfor %}
     </ul>
     <div class="row">
         {%for p in products%}
@@ -18,11 +17,11 @@
                     <h4 class="card-title">{{p.name}}</h4>
                     <p class="card-text">{{p.price}} VNĐ</p>
                     <a href="#" class="btn btn-primary">Xem chi tiết</a>
-                    <a href="#" class="btn btn-danger">Đặt hàng</a>
+                    <a href="javascript:;" onclick="addToCart({{p.id}}, '{{p.name}}', {{p.price}})" class="btn btn-danger">Đặt hàng</a>
                 </div>
             </div>
         </div>
         {%endfor%}
     </div>
 </section>
-{{% endblock %%}}
+{% endblock %}

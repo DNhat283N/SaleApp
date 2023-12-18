@@ -16,12 +16,13 @@
 </head>
 <body>
 
-{{% include 'layout/header.html' %}}
+{% include 'layout/header.html' %}
 
-{{% block content %}}
-{{% endblock %}}
+{% block content %}
+{% endblock %}
 
-{{% include 'layout/footer.html' %}}
+{% include 'layout/footer.html' %}
+<script src=" {{url_for('static', filename='js/cart.js')}}"></script>
 
 </body>
 </html>

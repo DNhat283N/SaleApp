@@ -10,13 +10,12 @@ from flask_login import login_user
 @app.route('/')
 def index():
     keyword = request.args.get('key')
-    cats = dao.get_categories()
     cat = request.args.get('cat')
     page = request.args.get('page')
     number_of_products = dao.count_product()
     page_size = app.config['PAGE_SIZE']
     products = dao.get_products(keyword, cat, page)
-    return render_template('index.html', categories=cats, products=products,
+    return render_template('index.html', products=products,
                            pages=math.ceil(number_of_products/page_size))
 
 
@@ -31,6 +30,11 @@ def admin_login():
         login_user(user)
 
     return redirect('/admin')
+
+
+@app.route('/cart')
+def cart():
+    return render_template('cart.html')
 
 
 @app.route('/api/cart', methods=['post'])
@@ -51,6 +55,14 @@ def add_to_cart():
         }
     session['cart'] = cart
     return jsonify(utils.count_cart(cart))
+
+
+@app.context_processor
+def common_response():
+    return {
+        'categories': dao.get_categories(),
+        'cart_stats': utils.count_cart()
+    }
 
 
 @login.user_loader

@@ -15,7 +15,7 @@
                 </li>
                 {%endfor%}
                 <li class="nav-item">
-                    <a class="nav-link text-danger" href="/cart">&#128722;<span class="badge bg-danger cart-counter">0</span></a>
+                    <a class="nav-link text-danger" href="/cart">&#128722;<span class="badge bg-danger cart-counter">{{cart_stats.total_quantity}}</span></a>
                 </li>
             </ul>
             <form class="d-flex" method="get">

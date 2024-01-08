@@ -1,0 +1,19 @@
+{% extends 'layout/base.html' %}
+
+{% block title %} Đăng Nhập {% endblock %}
+
+{% block content %}
+<h1 class="text-center text-info mt-1"> Đăng Nhập Người Dùng</h1>
+
+<form method="post" action="">
+    <div class="mb-3 mt-3">
+        <label for="username" class="form-label">Username:</label>
+        <input type="text" class="form-control" id="username" placeholder="Nhập Username" name="username">
+    </div>
+    <div class="mb-3">
+        <label for="pwd" class="form-label">Mật khẩu:</label>
+        <input type="password" class="form-control" id="pwd" placeholder="Nhập mật khẩu" name="password">
+    </div>
+    <button type="submit" class="btn btn-primary">Xác Nhận</button>
+</form>
+{% endblock %}

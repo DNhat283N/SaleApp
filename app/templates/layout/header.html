@@ -1,19 +1,29 @@
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Bán hàng trực tuyến</a>
+        <a class="navbar-brand" href="/">Bán hàng trực tuyến</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Trang chủ</a>
+                    <a class="nav-link" href="/">Trang chủ</a>
                 </li>
                 {%for c in categories%}
                 <li class="nav-item">
                     <a class="nav-link" href="/?cat={{c.id}}">{{c.name}}</a>
                 </li>
                 {%endfor%}
+            {%  if current_user.is_authenticated %}
+            <li class="nav-item">
+                    <a class="nav-link text-info" href="/">Chào {{current_user.username}}!</a>
+            </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link text-info" href="/login">Đăng Nhập</a>
+                </li>
+            {% endif %}
+
                 <li class="nav-item">
                     <a class="nav-link text-danger" href="/cart">&#128722;<span class="badge bg-danger cart-counter">{{cart_stats.total_quantity}}</span></a>
                 </li>

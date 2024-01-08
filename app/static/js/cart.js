@@ -1,5 +1,5 @@
 function addToCart(id, name, price) {
-    fetch('/api/cart', {
+    fetch("/api/cart", {
         method: 'post',
         body: JSON.stringify({
             "id": id,
@@ -7,7 +7,7 @@ function addToCart(id, name, price) {
             "price": price
         }),
         headers: {
-        'Content_Type': 'application/json'
+        'Content-Type': 'application/json'
         }
     }).then(function(res) {
         return res.json();
@@ -16,4 +16,66 @@ function addToCart(id, name, price) {
         for (let item of items)
             item.innerText = data.total_quantity
     });
+}
+
+function updateCart(id, obj){
+    obj.disabled = true;
+    fetch(`/api/cart/${id}`, {
+        method: "put",
+        body: JSON.stringify({
+            "quantity": obj.value
+        }),
+        headers: {
+        'Content-Type': 'application/json'
+        }
+    }).then(function(res) {
+        return res.json();
+    }).then(function(data) {
+    obj.disabled = false;
+        let items = document.getElementsByClassName("cart-counter")
+        for (let item of items)
+            item.innerText = data.total_quantity
+
+        let amounts = document.getElementsByClassName("cart-amount")
+        for (c of amounts)
+            c.innerText = data.total_amount.toLocaleString("en")
+    });
+}
+
+function deleteCart(id, obj){
+    if(confirm("Bạn chắc chắn xoá?" )=== true){
+         obj.disabled = true;
+        fetch(`/api/cart/${id}`, {
+            method: "delete",
+        }).then(function(res) {
+            return res.json();
+        }).then(function(data) {
+        obj.disabled = false;
+            let items = document.getElementsByClassName("cart-counter")
+            for (let item of items)
+                item.innerText = data.total_quantity
+
+            let amounts = document.getElementsByClassName("cart-amount")
+            for (c of amounts)
+                c.innerText = data.total_amount.toLocaleString("en")
+
+
+            let t = document.getElementById(`product${id}`);
+            t.style.display = "none"
+        });
+    }
+}
+
+function pay(){
+    if(confirm("Bạn chắc chắn thanh toán?") === true){
+        fetch("/api/pay",{
+            method: 'post'
+        }).then(res => res.json()).then(data => {
+            console.log(data); // Ghi thông tin lỗi vào console
+            if(data.status === 200)
+                location.reload();
+            else
+                alert(data.err_msg)
+        }).catch(err => console.error(err)); // Log lỗi nếu có
+    }
 }
